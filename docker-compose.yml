@@ -1,0 +1,26 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: poker-server
+    restart: unless-stopped
+    networks:
+      - poker-network
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: poker-client
+    ports:
+      - "3069:80"
+    depends_on:
+      - server
+    restart: unless-stopped
+    networks:
+      - poker-network
+
+networks:
+  poker-network:
+    driver: bridge
